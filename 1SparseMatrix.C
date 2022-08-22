@@ -9,27 +9,44 @@ The compact form of a sparse matrix contains three columns,
     column 2 has column number,
     column 3 has the value of non-zero element.
 
-The first row of our sparse matrix will contain [total number of rows], 
+The first row of our sparse matrix in compact form will contain [total number of rows]
     [total number of columns] and [total number of non-zero elements]  */
 
 
 #include <stdio.h>
-#define MAX 20
 
 
 void GetMatrix(int a[10][10], int row, int column);
-void Display(int b[MAX][3]);
-void CompactToSparse(int a[10][10], int row, int column, int b[MAX][3]);
+void CompactToSparse(int a[10][10], int row, int column, int b[20][10]);
+void SparseToCompact(int a[10][10], int row, int column, int b[20][10]);
+void DisplaySparse(int a[10][10], int row, int column);
+void DisplayCompact(int b[20][10]);
 
 
 int main(){
-    int a[10][10], b[MAX][3], row, column;
+    int a[10][10], b[20][10], row, column;
     printf("\nEnter the number of rows and columns:\n");
     scanf("%d%d", &row, &column);
 
-    GetMatrix(a, row, column);
-    CompactToSparse(a, row, column, b);
-    Display(b);
+    printf("\nConvert to - \n1. Sparse\n2. Compact\nEnter 1 or 2: ");
+    int choice;
+    scanf("%d",&choice);
+    switch(choice){
+        case 1:
+            GetMatrix(b, row, column);
+            CompactToSparse(a, row, column, b);
+            DisplaySparse(a, row, column);
+
+            break;
+        case 2:
+            GetMatrix(a, row, column);
+            SparseToCompact(a, row, column, b);
+            DisplayCompact(b);
+            break;
+        default:
+            printf("\nEnter valid choice!\n");
+    }
+
     return 0;
 }
 
@@ -44,7 +61,7 @@ void GetMatrix(int a[10][10], int row, int column){
         }
     }
 
-    printf("\nSparse Form -\n");
+    printf("\nYour Matrix - \n\n");
     for (int i = 0; i < row; i++){
         for (int j = 0; j < column; j++){
             printf("%d\t", a[i][j]);
@@ -55,7 +72,7 @@ void GetMatrix(int a[10][10], int row, int column){
 
 
 
-void CompactToSparse(int a[10][10], int row, int column, int b[MAX][3]){
+void SparseToCompact(int a[10][10], int row, int column, int b[20][10]){
     int k = 1;
     b[0][0] = row;
     b[0][1] = column;
@@ -68,18 +85,37 @@ void CompactToSparse(int a[10][10], int row, int column, int b[MAX][3]){
                 k++;
             }
         }
-        b[0][2] = k - 1;
+    }
+    b[0][2] = k - 1;
+}
+
+
+
+
+void DisplayCompact(int b[20][10]){
+    int i, column;
+    column = b[0][2];
+    printf("\nCompact Form - \n\n");
+    for (i = 0; i <= column; i++){
+        printf("%d\t%d\t%d\n", b[i][0], b[i][1], b[i][2]);
     }
 }
 
 
 
 
-void Display(int b[MAX][3]){
-    int i, column;
-    column = b[0][2];
-    printf("\nCompact Form - \n\n");
-    for (i = 0; i <= column; i++){
-        printf("%d\t%d\t%d\n", b[i][0], b[i][1], b[i][2]);
+void CompactToSparse(int a[10][10], int row, int column, int b[20][10]){
+    for(int i=0, k=1; i<b[0][2]; i++, k++){
+        a[(b[k][0])][(b[k][1])]=b[k][2];
+    }
+}
+
+
+void DisplaySparse(int a[10][10], int row, int column){
+    printf("\nSparse Form - \n\n");
+    for(int i=0; i<row; i++){
+        for (int j=0; j<column; j++){
+            printf("%d\t\n", &a[i][j]);
+        }
     }
 }
