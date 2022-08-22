@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "Tower_of_Hanoi.C": "cpp",
+        "Linked_List.C": "cpp",
+        "1. Linked_List.C": "cpp",
+        "1_Linked_List.C": "cpp",
+        "1_Single_Linked_List.C": "cpp",
+        "2_Single_Linked_List.C": "cpp",
+        "1SparseMatrix.C": "cpp"
+    }
+}
