@@ -14,13 +14,14 @@ The first row of our sparse matrix in compact form will contain [total number of
 
 
 #include <stdio.h>
-
+#include <stdlib.h>
 
 void GetMatrix(int a[10][10], int row, int column);
-void CompactToSparse(int a[10][10], int row, int column, int b[20][10]);
+void CompactToSparse(int a[10][10], int b[20][10], int row);
 void SparseToCompact(int a[10][10], int row, int column, int b[20][10]);
 void DisplaySparse(int a[10][10], int row, int column);
 void DisplayCompact(int b[20][10]);
+//void transpose();
 
 
 int main(){
@@ -28,13 +29,13 @@ int main(){
     printf("\nEnter the number of rows and columns:\n");
     scanf("%d%d", &row, &column);
 
-    printf("\nConvert to - \n1. Sparse\n2. Compact\nEnter 1 or 2: ");
+    printf("\nConvert to - \n1. Sparse\n2. Compact\n3.Transpose of compact\nEnter 1 or 2 or 3: ");
     int choice;
     scanf("%d",&choice);
     switch(choice){
         case 1:
             GetMatrix(b, row, column);
-            CompactToSparse(a, row, column, b);
+            CompactToSparse(a, b, row);
             DisplaySparse(a, row, column);
 
             break;
@@ -43,6 +44,13 @@ int main(){
             SparseToCompact(a, row, column, b);
             DisplayCompact(b);
             break;
+
+        case 3:
+        //    GetMatrix(b, row, column);
+        //    transpose();
+        //    DisplayCompact(b);
+            break;
+
         default:
             printf("\nEnter valid choice!\n");
     }
@@ -104,9 +112,20 @@ void DisplayCompact(int b[20][10]){
 
 
 
-void CompactToSparse(int a[10][10], int row, int column, int b[20][10]){
-    for(int i=0, k=1; i<b[0][2]; i++, k++){
-        a[(b[k][0])][(b[k][1])]=b[k][2];
+void CompactToSparse(int a[10][10], int b[20][10], int row){
+
+    int r, c;
+    r=b[0][0];
+    c=b[0][1];
+
+    for(int i=0; i<r; i++){
+        for(int j=0; j<c; j++){
+            a[i][j]=0;
+        }
+    }
+
+    for(int i=0; i<row; i++){
+        a[(b[i][0])][(b[i][1])]=b[i][2];
     }
 }
 
@@ -115,7 +134,8 @@ void DisplaySparse(int a[10][10], int row, int column){
     printf("\nSparse Form - \n\n");
     for(int i=0; i<row; i++){
         for (int j=0; j<column; j++){
-            printf("%d\t\n", &a[i][j]);
+            printf("%d\t", &a[i][j]);
         }
+        printf("\n");
     }
 }
