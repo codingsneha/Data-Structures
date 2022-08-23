@@ -21,7 +21,7 @@ void CompactToSparse(int a[10][10], int b[20][10], int row);
 void SparseToCompact(int a[10][10], int row, int column, int b[20][10]);
 void DisplaySparse(int a[10][10], int row, int column);
 void DisplayCompact(int b[20][10]);
-//void transpose();
+void transpose(int b[20][10]);
 
 
 int main(){
@@ -46,9 +46,8 @@ int main(){
             break;
 
         case 3:
-        //    GetMatrix(b, row, column);
-        //    transpose();
-        //    DisplayCompact(b);
+            GetMatrix(b, row, column);
+            transpose(b);
             break;
 
         default:
@@ -103,7 +102,7 @@ void SparseToCompact(int a[10][10], int row, int column, int b[20][10]){
 void DisplayCompact(int b[20][10]){
     int i, column;
     column = b[0][2];
-    printf("\nCompact Form - \n\n");
+    printf("\nCompact Form - \n\nR\tC\tV\n");
     for (i = 0; i <= column; i++){
         printf("%d\t%d\t%d\n", b[i][0], b[i][1], b[i][2]);
     }
@@ -131,10 +130,41 @@ void CompactToSparse(int a[10][10], int b[20][10], int row){
 
 
 void DisplaySparse(int a[10][10], int row, int column){
-    printf("\nSparse Form - \n\n");
+    printf("\nSparse Form - \n\nR\tC\tV\n");
     for(int i=0; i<row; i++){
         for (int j=0; j<column; j++){
             printf("%d\t", &a[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+
+void transpose(int b[20][10]){
+    int a[10][10];
+    a[0][1]=b[0][0];
+    a[0][0]=b[0][1];
+    a[0][2]=b[0][2];
+    int q=1;
+    if(a[0][2]<=0)
+        exit(0);
+    
+    for(int i=0; i<a[0][0]; i++){
+        for(int p=1; p<=a[0][2]; p++){
+            if(b[p][1]==i){
+                a[q][0]=b[p][1];
+                a[q][1]=b[p][0];
+                a[q][2]=b[p][2];
+                q=q+1;
+            }
+        }
+    }
+
+    printf("\nTranspose - \n\nR\tC\tV\n");
+    for(int i=0; i<=a[0][2]; i++){
+        for(int j=0; j<3; j++){
+            printf("%d\t", a[i][j]);
         }
         printf("\n");
     }
