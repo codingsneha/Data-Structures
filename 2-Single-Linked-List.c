@@ -1,96 +1,53 @@
 /*Operations possible on a single linked list are listed below:
 
-* TRAVERSING the list
-* INSERTING a node into the list
-* DELETING a node from the list
-* COPYING the list to make a duplicate of it
-* MERGING the linked list with another one to make a larger list
-* SEARCHING for an element in the list
+* 1. TRAVERSING the list
+* 2. INSERTING a node into the list
+* 3. DELETING a node from the list
+* 4. COPYING the list to make a duplicate of it
+* 5. SEARCHING for an element in the list
+* 6. REVERSING the list
+* 7. SORTING the list   */
 
-*/
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-//Creating Linked-List using structure and structure pointer
+//Creating Linked-List
 struct node{
     int data;
-    int key;
     struct node *next;
 };
 
-static struct node *head=NULL;
-static struct node *current=NULL;
-
-
-//TRAVERSING
-void display(){
-    struct node *ptr=head;                        //ptr is to store the pointer to a current node
-    printf("\n[ ");
-    while(ptr){                                   //continue till the last node
-        printf("(%d,%d)", ptr->key, ptr->data);       
-        ptr=ptr->next;                             //move to the next node
-    }
-    printf(" ]");
-}
+static struct node *head=NULL;         //Head points to first element
 
 
 
-/* INSERTION
-   1. Insertion at front
-   2. Insertion at end
-   3. Inserion at any other position
-*/
-
-//Insertion at front
-void insertFirst(int key, int data) {
-   //create a link
-   struct node *link = (struct node*) malloc(sizeof(struct node));
-	
-   link->key = key;
-   link->data = data;
-	
-   //point it to old first node
-   link->next = head;
-	
-   //point first to new first node
-   head = link;
-}
+/*_________________________________________________________________________*/
 
 
-//Insertion at end
-void insertEnd(int key, int data) {
-
-}
-
-
-
-
-
-
-
-
-
-
-//delete first item
-struct node* deleteFirst() {
-
-   //save reference to first link
-   struct node *tempLink = head;
-	
-   //mark next to first link as first 
-   head = head->next;
-	
-   //return the deleted link
-   return tempLink;
-}
-
-//is list empty
+//~~~is list empty
 bool isEmpty() {
    return head == NULL;
 }
 
+
+//~~~calculate size
+int calcSize(struct node *node){
+   int size=0;
+
+   while(node){
+      node=node->next;
+      size++;
+   }
+
+   return size;
+}
+
+
+
+//~~~find length of the list
 int length() {
    int length = 0;
    struct node *current;
@@ -102,74 +59,325 @@ int length() {
    return length;
 }
 
-//find a link with given key
-struct node* find(int key) {
 
-   //start from the first link
-   struct node* current = head;
+/*_________________________________________________________________________*/
 
-   //if list is empty
-   if(head == NULL) {
-      return NULL;
-   }
 
-   //navigate through list
-   while(current->key != key) {
-	
-      //if it is last node
-      if(current->next == NULL) {
-         return NULL;
-      } else {
-         //go to next link
-         current = current->next;
-      }
-   }      
-	
-   //if data found, return the current Link
-   return current;
+
+/* 1. TRAVERSING
+   Printing the list  */
+void display() {
+    struct node *ptr=head;                        //ptr is to store the pointer to a current node
+    printf("\nList - \n\n[ ");
+    while(ptr){                                   //continue till the last node
+        printf("%d, ", ptr->data);       
+        ptr=ptr->next;                             //move to the next node
+    }
+    printf(" ]");
 }
 
-//delete a link with given key
-struct node* delete(int key) {
 
-   //start from the first link
-   struct node* current = head;
-   struct node* previous = NULL;
+
+
+/* 2. INSERTION
+   2.1. Insertion at front
+   2.2. Insertion at end
+   2.3. Insertion at any other position */
+
+
+//2.1 Insertion at front
+void insertFirst(int data) {
+   struct node *new = (struct node*) malloc(sizeof(struct node));         // create new node
+	/* malloc returns void* type, we are type casting it to the user 
+      defined type struct node and then storing its value to node named new */
+
+   new->data = data;             //store data in new node
 	
-   //if list is empty
-   if(head == NULL) {
-      return NULL;
-   }
-
-   //navigate through list
-   while(current->key != key) {
-
-      //if it is last node
-      if(current->next == NULL) {
-         return NULL;
-      } else {
-         //store reference to current link
-         previous = current;
-         //move to next link
-         current = current->next;
-      }
-   }
-
-   //found a match, update the link
-   if(current == head) {
-      //change first to point to next link
-      head = head->next;
-   } else {
-      //bypass the current link
-      previous->next = current->next;
-   }    
+   new->next = head;            //point it to old first node
 	
-   return current;
+   head = new;                  //point head to new first node
 }
 
+
+
+
+//2.2 Insertion at end
+void insertEnd(int data) {
+
+   struct node *new = (struct node*) malloc(sizeof(struct node));      //create new node
+
+   new->data = data;
+   new->next = NULL;
+
+
+   //If linked list is empty
+   if(!isEmpty()){
+      head=new;
+      return;
+   }
+
+
+   struct node *temp = head;           //temporary node
+
+   while(temp->next)                   // go till the very end
+      temp=temp->next;                 // point temp to ending node
+
+   temp->next=new;                     //store value in end node
+
+}
+
+
+
+
+
+//2.3 Insertion at any other position
+void insertPosition(int pos, int data) {
+   int size= calcSize(head);
+
+   //If pos is 0 then should use insertStart method
+    //If pos is less than 0 then can't enter at all
+    //If pos is greater than size then bufferbound issue
+    if(pos < 1 || size < pos) { 
+        printf("Can't insert, %d is not a valid position\n",pos); 
+    } 
+    else{
+      struct node *temp = head;                       //temporary variable pointing to head
+      struct node *new = (struct node*) malloc(sizeof(struct node));      //create new node
+
+      new->data = data;
+      new->next = NULL;
+
+      while(--pos){
+         temp=temp->next;
+      }
+
+      new->next = temp->next;
+      temp->next = new;
+    }
+
+ 
+ }
+
+
+
+
+
+
+
+
+
+
+
+/* 3. DELETING
+      1. Deletion at beginning
+      2. Deletion at end
+      3. Deletion at any other node */
+
+
+
+
+// 3.1 Deletion at beginning
+void deleteFirst() {
+
+   //if linked list is empty
+   if(isEmpty()){
+      printf("\nList is already empty!\n");
+      return;
+   }
+
+   struct node *temp = head;              //save reference to first link in temporary variable
+
+
+   //if there is only one node in linked list
+   if(temp->next==NULL){
+      head = NULL;
+      printf("Value %d, deleted \n",temp);
+      free(temp);
+      return;
+   }
+	
+   head = head->next;                     //mark next to first link as first 
+	
+   //return the deleted link
+   printf("\nDeleted value %d\n", temp);
+}
+
+
+
+
+
+// 3.2 Deletion at end
+void deleteEnd() {
+
+   //if linked list is empty
+   if(isEmpty()){
+      printf("\nList is already empty!\n");
+      return;
+   }
+
+   struct node *temp = head;              //save reference to first link in temporary variable
+
+
+   //if there is only one node in linked list
+   if(temp->next==NULL){
+      head = NULL;
+      printf("Value %d, deleted \n",temp);
+      free(temp);
+      return;
+   }
+
+   struct node *ptr = NULL;
+   while(ptr->next){
+      ptr = temp;
+      temp = temp->next;
+   }
+
+   ptr->next=NULL;
+      free(ptr);
+
+}
+
+
+
+
+// 3.3 Deletion at any other position
+void deletePos(int pos) {
+   struct node *temp = head;
+   struct node *previous;
+
+
+    int size = calcSize(*head);
+
+    if(pos<1 || pos>size) {
+        printf("\nEnter valid position!\n");
+
+        return;
+    }
+
+
+    if(pos==1){
+        head = temp->next;          //changing head to next in the list
+        printf("Value %d, deleted \n",temp->data);
+        free(temp);
+        return;
+    }
+
+
+   while (--pos) {             //Until value to be deleted is found
+   
+        //store previous link node as we need to change its next val
+        previous = temp; 
+        temp = temp->next; 
+    }
+
+    previous->next = temp->next;
+    printf("Value %d, deleted \n",temp->data);
+
+    free(temp);
+
+}
+
+
+
+
+
+
+
+
+
+//4. COPYING
+struct node *copy(struct node *head) {
+   display();
+
+   if (head==NULL){
+      printf("\nList empty\n");
+      return;
+   }
+
+   struct node *copyList = (struct node *) malloc(sizeof(struct node));
+   copyList->data = head->data;
+   copyList->next = copy(head->next);
+
+   printf("\nCopied List - \n\n[ ");
+    while(copyList){                                   //continue till the last node
+        printf("%d, ", copyList->data);       
+        copyList=copyList->next;                             //move to the next node
+    }
+    printf(" ]");
+
+   return copyList;
+}
+
+
+
+
+
+
+
+
+
+//5. SEARCHING
+void search(int item){
+
+   if(isEmpty()){
+      printf("\nEmpty List!\n");
+      return;
+   }
+
+
+   struct node *ptr = head;
+
+   int flag=0, i=0;
+   while(ptr){
+      if(ptr->data==item)
+         printf("\nItem found at location %d\n", i+1);
+      else
+        flag=1;
+
+      i++;
+      ptr=ptr->next;
+   }
+
+   if(flag==1)
+      printf("\nElement not found\n");
+
+
+}
+
+
+
+
+
+
+
+
+//6. REVERSING
+void reverse(struct node** head_ref) {
+   struct node* prev   = NULL;
+   struct node* current = *head_ref;
+   struct node* next;
+	
+   while (current != NULL) {
+      next  = current->next;
+      current->next = prev;   
+      prev = current;
+      current = next;
+   }
+	
+   *head_ref = prev;
+}
+
+
+
+
+
+
+
+
+//7. SORTING
 void sort() {
 
-   int i, j, k, tempKey, tempData;
+   int i, j, k, tempData;
    struct node *current;
    struct node *next;
 	
@@ -187,9 +395,6 @@ void sort() {
             current->data = next->data;
             next->data = tempData;
 
-            tempKey = current->key;
-            current->key = next->key;
-            next->key = tempKey;
          }
 			
          current = current->next;
@@ -198,20 +403,11 @@ void sort() {
    }   
 }
 
-void reverse(struct node** head_ref) {
-   struct node* prev   = NULL;
-   struct node* current = *head_ref;
-   struct node* next;
-	
-   while (current != NULL) {
-      next  = current->next;
-      current->next = prev;   
-      prev = current;
-      current = next;
-   }
-	
-   *head_ref = prev;
-}
+
+
+
+
+
 
 void main() {
    insertFirst(1,10);
