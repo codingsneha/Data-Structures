@@ -10,6 +10,8 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 //Creating Linked-List using structure and structure pointer
 struct node{
@@ -22,17 +24,26 @@ static struct node *head=NULL;
 static struct node *current=NULL;
 
 
+//TRAVERSING
 void display(){
-    struct node *ptr=head;                        //store the pointer t to a current node
+    struct node *ptr=head;                        //ptr is to store the pointer to a current node
     printf("\n[ ");
     while(ptr){                                   //continue till the last node
         printf("(%d,%d)", ptr->key, ptr->data);       
-        ptr=ptr->next;                             //move to the next nose
+        ptr=ptr->next;                             //move to the next node
     }
     printf(" ]");
 }
 
 
+
+/* INSERTION
+   1. Insertion at front
+   2. Insertion at end
+   3. Inserion at any other position
+*/
+
+//Insertion at front
 void insertFirst(int key, int data) {
    //create a link
    struct node *link = (struct node*) malloc(sizeof(struct node));
@@ -46,6 +57,21 @@ void insertFirst(int key, int data) {
    //point first to new first node
    head = link;
 }
+
+
+//Insertion at end
+void insertEnd(int key, int data) {
+
+}
+
+
+
+
+
+
+
+
+
 
 //delete first item
 struct node* deleteFirst() {
@@ -198,7 +224,7 @@ void main() {
    printf("Original List: "); 
 	
    //print list
-   printList();
+   display();
 
    while(!isEmpty()) {            
       struct node *temp = deleteFirst();
@@ -207,7 +233,7 @@ void main() {
    }  
 	
    printf("\nList after deleting all items: ");
-   printList();
+   display();
    insertFirst(1,10);
    insertFirst(2,20);
    insertFirst(3,30);
@@ -216,7 +242,7 @@ void main() {
    insertFirst(6,56);
    
    printf("\nRestored List: ");
-   printList();
+   display();
    printf("\n");  
 
    struct node *foundLink = find(4);
@@ -231,7 +257,7 @@ void main() {
 
    delete(4);
    printf("List after deleting an item: ");
-   printList();
+   display();
    printf("\n");
    foundLink = find(4);
 	
@@ -247,9 +273,9 @@ void main() {
    sort();
 	
    printf("List after sorting the data: ");
-   printList();
+   display();
 	
    reverse(&head);
    printf("\nList after reversing the data: ");
-   printList();
+   display();
 }
