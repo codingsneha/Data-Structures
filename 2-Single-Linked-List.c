@@ -69,6 +69,12 @@ int length() {
 /* 1. TRAVERSING
    Printing the list  */
 void display() {
+
+   if(isEmpty){
+      printf("\n\nCurrently list is empty");
+      return;
+   }
+
     struct node *ptr=head;                        //ptr is to store the pointer to a current node
     printf("\nList - \n\n[ ");
     while(ptr){                                   //continue till the last node
@@ -140,7 +146,7 @@ void insertPosition(int pos, int data) {
     //If pos is less than 0 then can't enter at all
     //If pos is greater than size then bufferbound issue
     if(pos < 1 || size < pos) { 
-        printf("Can't insert, %d is not a valid position\n",pos); 
+        printf("\n\nCan't insert, %d is not a valid position\n",pos); 
     } 
     else{
       struct node *temp = head;                       //temporary variable pointing to head
@@ -183,7 +189,7 @@ void deleteFirst() {
 
    //if linked list is empty
    if(isEmpty()){
-      printf("\nList is already empty!\n");
+      printf("\n\nWait, list is already empty!\n");
       return;
    }
 
@@ -193,7 +199,7 @@ void deleteFirst() {
    //if there is only one node in linked list
    if(temp->next==NULL){
       head = NULL;
-      printf("Value %d, deleted \n",temp);
+      printf("\n\nValue %d, deleted \n",temp);
       free(temp);
       return;
    }
@@ -201,7 +207,7 @@ void deleteFirst() {
    head = head->next;                     //mark next to first link as first 
 	
    //return the deleted link
-   printf("\nDeleted value %d\n", temp);
+   printf("\n\nDeleted value %d\n", temp);
 }
 
 
@@ -213,7 +219,7 @@ void deleteEnd() {
 
    //if linked list is empty
    if(isEmpty()){
-      printf("\nList is already empty!\n");
+      printf("\n\nWait, list is already empty!");
       return;
    }
 
@@ -223,7 +229,7 @@ void deleteEnd() {
    //if there is only one node in linked list
    if(temp->next==NULL){
       head = NULL;
-      printf("Value %d, deleted \n",temp);
+      printf("\n\nValue %d, deleted \n",temp);
       free(temp);
       return;
    }
@@ -251,7 +257,7 @@ void deletePos(int pos) {
     int size = calcSize(head);
 
     if(pos<1 || pos>size) {
-        printf("\nEnter valid position!\n");
+        printf("\n\nEnter valid position!\n");
 
         return;
     }
@@ -259,7 +265,7 @@ void deletePos(int pos) {
 
     if(pos==1){
         head = temp->next;          //changing head to next in the list
-        printf("Value %d, deleted \n",temp->data);
+        printf("\n\nValue %d, deleted \n",temp->data);
         free(temp);
         return;
     }
@@ -273,7 +279,7 @@ void deletePos(int pos) {
     }
 
     previous->next = temp->next;
-    printf("Value %d, deleted \n",temp->data);
+    printf("\n\nValue %d, deleted \n",temp->data);
 
     free(temp);
 
@@ -292,7 +298,7 @@ struct node *copy(struct node *head) {
    display();
 
    if (head==NULL){
-      printf("\nList empty\n");
+      printf("\n\nList is empty!\n");
       return NULL;
    }
 
@@ -322,7 +328,7 @@ struct node *copy(struct node *head) {
 void search(int item){
 
    if(isEmpty()){
-      printf("\nEmpty List!\n");
+      printf("\n\nEmpty List!\n");
       return;
    }
 
@@ -332,7 +338,7 @@ void search(int item){
    int flag=0, i=0;
    while(ptr){
       if(ptr->data==item)
-         printf("\nItem found at location %d\n", i+1);
+         printf("\n\nItem found at location %d\n", i+1);
       else
         flag=1;
 
@@ -341,7 +347,7 @@ void search(int item){
    }
 
    if(flag==1)
-      printf("\nElement not found\n");
+      printf("\n\nElement not found\n");
 
 
 }
@@ -354,9 +360,9 @@ void search(int item){
 
 
 //6. REVERSING
-void reverse(struct node** head_ref) {
+void reverse(struct node *head_ref) {
    struct node* prev   = NULL;
-   struct node* current = *head_ref;
+   struct node* current = head_ref;
    struct node* next;
 	
    while (current != NULL) {
@@ -366,7 +372,7 @@ void reverse(struct node** head_ref) {
       current = next;
    }
 	
-   *head_ref = prev;
+   head_ref = prev;
 }
 
 
@@ -408,15 +414,171 @@ void sort() {
 
 
 
+//    MENU
+void menu(){
+
+   printf("\n\n____________________________________________________________");
+   printf("\n\nChoose one - ");
+   printf("\n\n\n\t1. DISPLAY the list");
+   printf("\n\n\t2. INSERTING a node into the list");
+   printf("\n\n\t3. DELETING a node from the list");
+   printf("\n\n\t4. COPYING the list to make a duplicate of it");
+   printf("\n\n\t5. SEARCHING for an element in the list");
+   printf("\n\n\t6. REVERSING the list");
+   printf("\n\n\t7. SORTING the list");
+   printf("\n\n\t8. EXIT");
+
+   printf("\n\nEnter the operation you'd like to perform [1-8] : ");
+}
 
 
 
 void main() {
 
-   printf("\n\n\n\t\tHey human!\n\n\t\t Welcome");
-   printf("\n\nAs you already may be aware, \nfollowing operations are possible on a single linked list - ");
-   printf("\n\n\n\t1. TRAVERSING the list\n\n\t2. INSERTING a node into the list\n\n\t3. DELETING a node from the list");
-   printf("\n\n\t4. COPYING the list to make a duplicate of it\n\n\t5. SEARCHING for an element in the list");
-   printf("\n\n\t6. REVERSING the list\n\n\t7. SORTING the list");
+   printf("\n\n\n\t\tHey human!");
+   printf("\n\n\t\t Welcome");
+   printf("\n\nAs you already may be aware, ");
+   printf("\nfollowing operations are possible on a single linked list - ");
+
+   int choice=1, i=0, d=0, data, pos;
+
+   while(choice){
+      menu();
+
+      scanf("%d", &choice);
+
+
+      switch (choice) {
+
+         case 1:
+
+            display();
+
+            break;
+      
+         case 2:
+         //INSERTION
+
+            printf("\nChoose one option - \n\n\t1. Insert at first\n\t2. Insert at end\n\t3. Insert at any other position\n\nEnter[1-3]: ");
+            scanf("%d", &i);
+
+            switch (i){
+               case 1:
+                  printf("\nEnter element: ");
+                  scanf("%d", &data);
+                  printf("\nBefore insertion - ");
+                  display();
+                  printf("\n\nInserting %d at beginning . . .\n\nDone!", data);
+                  insertFirst(data);
+                  display();
+                  break;
+
+               case 2:
+                  printf("\nEnter element: ");
+                  scanf("%d", &data);
+                  printf("\nBefore insertion - ");
+                  display();
+                  printf("\n\nInserting %d at end . . .\n\nDone!", data);
+                  insertEnd(data);
+                  display();
+                  break;
+
+               case 3:
+                  printf("\nEnter element: ");
+                  scanf("%d", &data);
+                  printf("\nEnter position: ");
+                  scanf("%d", &pos);
+                  printf("\nBefore insertion - ");
+                  display();
+                  printf("\n\nInserting %d at position %d . . .\n\nDone!", data, pos);
+                  insertFirst(data);
+                  display();
+                  break;
+            }
+
+
+            break;
+      
+         case 3:
+         // DELETION
+
+            printf("\nChoose one option - \n\n\t1. Delete element at front\n\t2. Delete element at end\n\t3. Delete at any other position\n\nEnter[1-3]: ");
+            scanf("%d", &d);
+
+            switch (d){
+               case 1:
+                  printf("\nBefore deletion - ");
+                  display();
+                  printf("\n\nDeleting first element . . .\n\nDone!");
+                  deleteFirst();
+                  break;
+
+               case 2:
+                  printf("\nBefore deletion - ");
+                  display();
+                  printf("\n\nDeleting last element . . .\n\nDone!", data);
+                  deleteEnd();
+                  break;
+
+               case 3:
+                  printf("\nEnter position: ");
+                  scanf("%d", &pos);
+                  printf("\nBefore deletion - ");
+                  display();
+                  printf("\n\nDeleting at position %d...\n\nDone!", pos);
+                  deletePos(pos);
+                  break;
+            }
+
+            break;
+
+
+
+         case 4:
+         //COPY
+
+            copy(head);
+
+            break;
+      
+         case 5:
+         //SEARCH
+
+            printf("\n\nEnter element to be searched: ");
+            scanf("%d", &data);
+
+            search(data);
+
+            break;
+      
+         case 6:
+         //REVERSE
+
+            display();
+            reverse(head);
+            printf("\n\nReversing list . . .\n\nDone!");
+            display();
+
+            break;
+      
+         case 7:
+         //SORTING
+
+            display();
+            sort();
+            printf("\n\nSorting list . . .\n\nDone!");
+            display();
+
+            break;
+      
+         case 8:
+            choice=0;
+            break;
+      
+         default:
+            printf("\n\nEnter valid choice!");
+      }
+   }
+   
 
 }
