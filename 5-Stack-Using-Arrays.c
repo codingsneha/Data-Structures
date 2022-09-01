@@ -30,8 +30,7 @@ void push () {
     else{
         printf("\n\nEnter element to be inserted to the stack: ");
         scanf("%d", &data);
-        top+=1;
-        stack[top]=data;
+        stack[++top]=data;
     }
 }
 
@@ -46,8 +45,7 @@ void pop () {
         printf("\n\nUnderflow!");
     
     else{
-        printf("\n\nPopped element: %d", stack[top]);
-        top=top-1;
+        printf("\n\nPopped element: %d", stack[top--]);
     }
     
 }
@@ -72,11 +70,11 @@ void show () {
         printf("\n\nStack is empty!");
 
     else{
-        printf("\n\nElements present in stack: [ ");
+        printf("\n\nElements present in stack: [\t");
         for(int i=0; i<=top; i++){
-            printf("%d, ", stack[i]);
+            printf("%d\t", stack[i]);
         }
-        printf(" ]");
+        printf("]");
     }
 }
 

@@ -72,12 +72,12 @@ void show(){
         printf("\n\nEmpty stack!");
     else{
         struct node *temp = top;
-        printf("\n\nStack - \n[ ");
+        printf("\n\nStack - \n[\t");
         while(temp){
             printf("%d\t", temp->data);
             temp = temp->next;
         }
-        printf(" ]");
+        printf("]");
     }
 }
 
