@@ -44,10 +44,21 @@ void display () {
     }
 }
 
+void reverse () {
+    node *curr = head, *prev = NULL, *next;
+    while (curr) {
+        next = curr -> next;
+        curr -> next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head = prev;
+}
+
 int main() {
     int ch = -1, val;
     while (ch) {
-        printf("\n\nChoose -\n\t1. Enqueue\n\t2. Dequeue\n\t3. Display\n\t4. Exit\nEnter[1-4]: ");
+        printf("\n\nChoose -\n\t1. Enqueue\n\t2. Dequeue\n\t3. Display\n\t4. Reverse\n\t5. Exit\nEnter[1-5]: ");
         scanf("%d", &ch);
         switch (ch) {
             case 1:
@@ -62,6 +73,9 @@ int main() {
                 display();
                 break;
             case 4:
+                reverse();
+                break;
+            case 5:
                 ch = 0;
                 break;
             default:

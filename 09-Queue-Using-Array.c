@@ -54,12 +54,21 @@ void peep(){
     printf("\n\nPeekaboo! Latest element is %d", queue[rear]);
 }
 
+void reverse () {
+    int temp = 0;
+    for (int i = 0; i < (rear + 1)/2; i++){
+        temp = queue[i];
+        queue[i] = queue[rear - i];
+        queue[rear - i] = temp;
+        printf ("%d %d  ", i, temp);
+    }
+}
 
 main() {
     int choice = -1, data;
 
     while (choice) {
-        printf("\n\nChoose - \n\t1. Display\n\t2. Push\n\t3. Pop\n\t4. Peep\n\t5. Exit\n\nEnter choice[1-5]: ");
+        printf("\n\nChoose - \n\t1. Display\n\t2. Push\n\t3. Pop\n\t4. Peep\n\t5. Reverse\n\t6. Exit\n\nEnter choice[1-5]: ");
         scanf("%d", &choice);
         switch (choice) {
             case 1: display(); break;
@@ -71,7 +80,8 @@ main() {
                 break;
             case 3: pop(); display(); break;
             case 4: peep(); break;
-            case 5: choice = 0; break;
+            case 5: reverse(); break;
+            case 6: choice = 0; break;
             default: printf("\n\nEnter valid choice!"); break;
         }
     }
